@@ -33,11 +33,16 @@ def index():
     return 'Welcome To The Disney Character Api!!! To begin, use route "/api".'
 
 @app.route('/api/', methods=['GET', 'POST'])
-@app.route('/api/<id>', methods=['GET', 'PUT', 'DELETE'])
-def endpoint(id=None):
+@app.route('/api/id', methods=['GET', 'POST'])
+@app.route('/api/name', methods=['GET', 'POST'])
+@app.route('/api/id/<id>', methods=['GET', 'PUT', 'DELETE'])
+@app.route('/api/name/<name>', methods=['GET', 'PUT', 'DELETE'])
+def endpoint(id=None,name=None):
   if request.method == 'GET':
     if id:
         return jsonify(model_to_dict(Characters.get(Characters.id == id)))
+    if name:
+        return jsonify(model_to_dict(Characters.get(Characters.name == name)))
     else:
         char_list = []
         for char in Characters.select():
@@ -58,4 +63,4 @@ def endpoint(id=None):
     Characters.delete().where(Characters.id == id).execute()
     return f"Disney Dude {str(id)} deleted."
 
-app.run(port=3030, debug=True)
+app.run(port=3040, debug=True)
